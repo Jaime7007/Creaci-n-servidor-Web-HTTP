@@ -10,68 +10,25 @@ if (!isset($_SESSION['usuario'])) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Zona privada</title>
+    <title>Zona privada · Sistema de usuarios</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: linear-gradient(135deg, #111827, #1f2937);
-            color: #111827;
-        }
-        .dashboard-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .dashboard-card {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.35);
-            max-width: 480px;
-            width: 100%;
-            padding: 28px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        .dashboard-title {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
-            color: #111827;
-        }
-        .dashboard-text {
-            font-size: 0.95rem;
-            color: #4b5563;
-            margin-bottom: 20px;
-        }
-        .dashboard-button {
-            display: inline-block;
-            border-radius: 999px;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            border: 1px solid #e5e7eb;
-            color: #374151;
-            text-decoration: none;
-            background-color: #f9fafb;
-            transition: background-color 0.15s ease, border-color 0.15s ease;
-        }
-        .dashboard-button:hover {
-            background-color: #f3f4f6;
-            border-color: #d1d5db;
-        }
+        body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#1f2937 0,#020617 55%,#000 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
+        .card{background:#020617;border-radius:24px;box-shadow:0 28px 80px rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.25);max-width:480px;width:100%;padding:26px 26px 22px;color:#e5e7eb;text-align:center;}
+        .title{font-size:1.5rem;font-weight:600;margin:0 0 8px;}
+        .text{font-size:.92rem;color:#9ca3af;margin-bottom:20px;}
+        .btn{display:inline-block;margin-top:4px;border-radius:999px;padding:8px 16px;font-size:.88rem;border:1px solid #4b5563;background:#020617;color:#e5e7eb;text-decoration:none;transition:background .15s,border-color .15s;}
+        .btn:hover{background:#111827;border-color:#9ca3af;}
     </style>
 </head>
 <body>
-<div class="dashboard-wrapper">
-    <div class="dashboard-card">
-        <h1 class="dashboard-title">Hola, <?php echo htmlspecialchars($_SESSION['nombre']); ?> 👋</h1>
-        <p class="dashboard-text">
-            Has iniciado sesión como <strong><?php echo htmlspecialchars($_SESSION['usuario']); ?></strong>.
-        </p>
-        <a class="dashboard-button" href="logout.php">Cerrar sesión</a>
-    </div>
+<div class="card">
+    <h1 class="title">Hola, <?php echo htmlspecialchars($_SESSION['nombre']); ?> 👋</h1>
+    <p class="text">
+        Has iniciado sesión como <strong><?php echo htmlspecialchars($_SESSION['usuario']); ?></strong>.
+        Esta página solo es accesible para usuarios autenticados.
+    </p>
+    <a class="btn" href="logout.php">Cerrar sesión</a>
+    <a class="btn" href="index.php">Volver al inicio</a>
 </div>
 </body>
 </html>
