@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
 $db   = 'web_practica';
-$user = 'root';
-$pass = 'TU_PASSWORD_MYSQL';
+$user = 'webuser';       // Usuario MySQL de la web
+$pass = 'jaime_7007';   // Cambia por la que hayas puesto al crear el usuario
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
