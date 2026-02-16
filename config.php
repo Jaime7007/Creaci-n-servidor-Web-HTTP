@@ -1,9 +1,8 @@
 <?php
-// Datos de conexión al MySQL del propio servidor
-$host = 'localhost';      // MySQL está en el mismo Ubuntu Server
+$host = 'localhost';
 $db   = 'web_practica';
-$user = 'root';           // Cambia si usas otro usuario
-$pass = 'TU_PASSWORD_MYSQL'; // Sustituye por tu contraseña real
+$user = 'root';
+$pass = 'TU_PASSWORD_MYSQL';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
