@@ -1,19 +1,43 @@
 <?php
 require 'config.php';
+require 'validaciones.php';
 
-$mensajeError = '';
-$mensajeOk    = '';
+$errores   = [];
+$mensajeOk = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre    = trim($_POST['nombre'] ?? '');
-    $apellidos = trim($_POST['apellidos'] ?? '');
-    $email     = trim($_POST['email'] ?? '');
-    $usuario   = trim($_POST['usuario'] ?? '');
-    $password  = $_POST['password'] ?? '';
+    $nombre    = $_POST['nombre']    ?? '';
+    $apellidos = $_POST['apellidos'] ?? '';
+    $email     = $_POST['email']     ?? '';
+    $usuario   = $_POST['usuario']   ?? '';
+    $password  = $_POST['password']  ?? '';
 
-    if ($nombre === '' || $apellidos === '' || $email === '' || $usuario === '' || $password === '') {
-        $mensajeError = 'Todos los campos son obligatorios.';
-    } else {
+    // 1) Campos obligatorios
+    $errores = array_merge($errores, validarCamposObligatorios([
+        'nombre'    => $nombre,
+        'apellidos' => $apellidos,
+        'email'     => $email,
+        'usuario'   => $usuario,
+        'password'  => $password,
+    ]));
+
+    // 2) Email
+    if ($email !== '') {
+        $errores = array_merge($errores, validarEmail($email));
+    }
+
+    // 3) Password
+    if ($password !== '') {
+        $errores = array_merge($errores, validarPassword($password));
+    }
+
+    // 4) Usuario y email únicos
+    if ($usuario !== '' && $email !== '') {
+        $errores = array_merge($errores, validarUsuarioYEmailUnicos($pdo, $usuario, $email));
+    }
+
+    // 5) Insertar si no hay errores
+    if (empty($errores)) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         try {
@@ -31,11 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mensajeOk = 'Usuario registrado correctamente. Ahora puedes iniciar sesión.';
         } catch (PDOException $e) {
-            if ($e->getCode() === '23000') {
-                $mensajeError = 'El usuario o el email ya existen.';
-            } else {
-                $mensajeError = 'Error al registrar el usuario.';
-            }
+            $errores[] = 'Error al registrar el usuario.';
         }
     }
 }
@@ -68,12 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1 class="title">Crear cuenta</h1>
     <p class="subtitle">Regístrate para acceder al sistema de usuarios.</p>
 
-    <?php if ($mensajeError): ?>
-        <div class="msg-error"><?php echo htmlspecialchars($mensajeError); ?></div>
+    <?php if (!empty($errores)): ?>
+        <div class="msg-error">
+            <?php foreach ($errores as $e): ?>
+                <div><?php echo htmlspecialchars($e); ?></div>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
 
     <?php if ($mensajeOk): ?>
-        <div class="msg-ok"><?php echo htmlspecialchars($mensajeOk); ?></div>
+        <div class="msg-ok">
+            <?php echo htmlspecialchars($mensajeOk); ?>
+        </div>
     <?php endif; ?>
 
     <form method="post" action="registro.php">
